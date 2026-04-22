@@ -1,8 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.api.endpoints import expenses
+from app.api.endpoints import expenses, auth
 from app.db.session import create_db_and_tables
-
 from contextlib import asynccontextmanager
 
 @asynccontextmanager
@@ -12,17 +11,17 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(title="Money Tracker API", lifespan=lifespan)
 
-# Add CORS middleware to allow frontend to communicate
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"], # In production, restrict this
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-app.include_router(expenses.router, prefix="/expenses", tags=["expenses"])
+app.include_router(auth.router, prefix="/api/auth", tags=["auth"])
+app.include_router(expenses.router, prefix="/api/expenses", tags=["expenses"])
 
-@app.get("/")
-def root():
-    return {"message": "Welcome to Money Tracker API"}
+@app.get("/api/health")
+def health():
+    return {"status": "ok"}

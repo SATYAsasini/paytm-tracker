@@ -12,7 +12,12 @@ dependencies = [
     "uvicorn (>=0.45.0,<0.46.0)",
     "sqlmodel (>=0.0.38,<0.0.39)",
     "pytest (>=9.0.3,<10.0.0)",
-    "httpx (>=0.28.1,<0.29.0)"
+    "httpx (>=0.28.1,<0.29.0)",
+    "passlib[bcrypt] (>=1.7.4,<2.0.0)",
+    "python-jose[cryptography] (>=3.5.0,<4.0.0)",
+    "python-multipart (>=0.0.26,<0.0.27)",
+    "bcrypt (==4.0.1)",
+    "psycopg2-binary (>=2.9.12,<3.0.0)"
 ]
 
 
