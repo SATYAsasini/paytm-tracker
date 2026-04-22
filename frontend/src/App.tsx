@@ -97,41 +97,50 @@ export default function App() {
   useEffect(() => {
     if (view === 'app' && token) fetchExpenses();
   }, [view, token, categoryFilter, sortOrder]);
+const handleLogin = async (e: React.FormEvent) => {
+  e.preventDefault();
+  if (loginData.phone_number.length !== 10) {
+    setError("Please enter a valid 10-digit phone number");
+    return;
+  }
+  setSubmitting(true);
+  setError(null);
+  try {
+    const res = await axios.post(`${API_BASE_URL}/auth/login`, loginData);
+    const newToken = res.data.access_token;
+    setToken(newToken);
+    setView('app');
+  } catch (err: any) {
+    setError(err.response?.data?.detail || 'Invalid phone number or password');
+  } finally {
+    setSubmitting(false);
+  }
+};
 
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setSubmitting(true);
-    setError(null);
-    try {
-      const res = await axios.post(`${API_BASE_URL}/auth/login`, loginData);
-      const newToken = res.data.access_token;
-      setToken(newToken);
-      setView('app');
-    } catch (err: any) {
-      setError(err.response?.data?.detail || 'Invalid phone number or password');
-    } finally {
-      setSubmitting(false);
-    }
-  };
+const handleRegister = async (e: React.FormEvent) => {
+  e.preventDefault();
+  if (registerData.phone_number.length !== 10) {
+    setError("Phone number must be exactly 10 digits");
+    return;
+  }
+  if (registerData.password !== registerData.confirm_password) {
+    setError("Passwords don't match!");
+    return;
+  }
+  setSubmitting(true);
+  setError(null);
+  try {
+    await axios.post(`${API_BASE_URL}/auth/register`, registerData);
+    setView('login');
+    setError('Account created! Please login.');
+  } catch (err: any) {
+    const detail = err.response?.data?.detail;
+    setError(Array.isArray(detail) ? detail[0].msg : detail || 'Registration failed');
+  } finally {
+    setSubmitting(false);
+  }
+};
 
-  const handleRegister = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (registerData.password !== registerData.confirm_password) {
-      setError("Passwords don't match!");
-      return;
-    }
-    setSubmitting(true);
-    setError(null);
-    try {
-      await axios.post(`${API_BASE_URL}/auth/register`, registerData);
-      setView('login');
-      setError('Account created! Please login.');
-    } catch (err: any) {
-      setError(err.response?.data?.detail || 'Registration failed');
-    } finally {
-      setSubmitting(false);
-    }
-  };
 
   const handleLogout = () => {
     setToken(null);

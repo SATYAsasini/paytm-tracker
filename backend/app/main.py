@@ -10,14 +10,14 @@ except Exception as e:
 
 app = FastAPI(title="Money Tracker API")
 
-# More explicit CORS for Vercel deployment
+# FIX: Removed allow_credentials=True to allow allow_origins=["*"]
+# This is the standard fix for the "Credential is not allowed for Origin *" error.
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
-    allow_credentials=True,
+    allow_credentials=False,
     allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allow_headers=["*"],
-    expose_headers=["*"],
 )
 
 app.include_router(auth.router, prefix="/api/auth", tags=["auth"])

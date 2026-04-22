@@ -1,21 +1,15 @@
 from datetime import datetime
 from decimal import Decimal
-from typing import Optional, List
+from typing import Optional, List, Annotated
 from sqlmodel import Field, SQLModel, create_engine, Session, select, Relationship
-from pydantic import field_validator
-import re
+from pydantic import field_validator, StringConstraints
+
+# Strict 10-digit number constraint
+PhoneNumber = Annotated[str, StringConstraints(pattern=r"^\d{10}$", min_length=10, max_length=10)]
 
 class UserBase(SQLModel):
-    # Regex: Must be exactly 10 digits (Standard Indian Mobile format)
-    phone_number: str = Field(index=True, unique=True)
+    phone_number: PhoneNumber = Field(index=True, unique=True)
     name: str
-
-    @field_validator("phone_number")
-    @classmethod
-    def validate_phone(cls, v: str):
-        if not re.match(r"^\d{10}$", v):
-            raise ValueError("Phone number must be exactly 10 digits")
-        return v
 
 class User(UserBase, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
