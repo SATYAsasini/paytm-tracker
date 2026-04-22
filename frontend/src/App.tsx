@@ -111,7 +111,9 @@ const handleLogin = async (e: React.FormEvent) => {
     setToken(newToken);
     setView('app');
   } catch (err: any) {
-    setError(err.response?.data?.detail || 'Invalid phone number or password');
+    const detail = err.response?.data?.detail;
+    const message = err.response?.data?.message;
+    setError(message ? `${detail}: ${message}` : (detail || 'Invalid phone number or password'));
   } finally {
     setSubmitting(false);
   }
@@ -135,7 +137,8 @@ const handleRegister = async (e: React.FormEvent) => {
     setError('Account created! Please login.');
   } catch (err: any) {
     const detail = err.response?.data?.detail;
-    setError(Array.isArray(detail) ? detail[0].msg : detail || 'Registration failed');
+    const message = err.response?.data?.message;
+    setError(message ? `${detail}: ${message}` : (Array.isArray(detail) ? detail[0].msg : detail || 'Registration failed'));
   } finally {
     setSubmitting(false);
   }
@@ -161,7 +164,9 @@ const handleRegister = async (e: React.FormEvent) => {
       fetchExpenses();
       setError(null);
     } catch (err: any) {
-      setError(err.response?.data?.detail || 'Failed to add expense');
+      const detail = err.response?.data?.detail;
+      const message = err.response?.data?.message;
+      setError(message ? `${detail}: ${message}` : (detail || 'Failed to add expense'));
     } finally {
       setSubmitting(false);
     }
@@ -189,18 +194,21 @@ const handleRegister = async (e: React.FormEvent) => {
                 <Phone className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-300" size={20} />
                 <input 
                   required 
-                  type="text" 
+                  type="tel" 
                   maxLength={10}
                   inputMode="numeric"
                   placeholder="10-digit mobile number" 
                   className="w-full pl-14 pr-6 py-5 bg-gray-50 rounded-2xl focus:bg-white focus:ring-4 focus:ring-paytm-blue/10 border-2 border-transparent focus:border-paytm-blue transition-all outline-none font-bold" 
                   value={loginData.phone_number} 
-                  onKeyDown={(e) => {
-                    if (!/[0-9]/.test(e.key) && e.key !== 'Backspace' && e.key !== 'Tab' && e.key !== 'Enter' && e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') {
+                  onKeyPress={(e) => {
+                    if (!/[0-9]/.test(e.key)) {
                       e.preventDefault();
                     }
                   }}
-                  onChange={e => setLoginData({...loginData, phone_number: e.target.value.replace(/\D/g, '').slice(0, 10)})} 
+                  onChange={e => {
+                    const val = e.target.value.replace(/\D/g, '').slice(0, 10);
+                    setLoginData({...loginData, phone_number: val});
+                  }} 
                 />
               </div>
             </div>
@@ -249,18 +257,21 @@ const handleRegister = async (e: React.FormEvent) => {
                 <Phone className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-300" size={20} />
                 <input 
                   required 
-                  type="text" 
+                  type="tel" 
                   maxLength={10}
                   inputMode="numeric"
                   placeholder="10-digit mobile number" 
                   className="w-full pl-14 pr-6 py-4 bg-gray-50 rounded-2xl focus:bg-white focus:ring-4 focus:ring-paytm-blue/10 border-2 border-transparent focus:border-paytm-blue transition-all outline-none font-bold" 
                   value={registerData.phone_number} 
-                  onKeyDown={(e) => {
-                    if (!/[0-9]/.test(e.key) && e.key !== 'Backspace' && e.key !== 'Tab' && e.key !== 'Enter' && e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') {
+                  onKeyPress={(e) => {
+                    if (!/[0-9]/.test(e.key)) {
                       e.preventDefault();
                     }
                   }}
-                  onChange={e => setRegisterData({...registerData, phone_number: e.target.value.replace(/\D/g, '').slice(0, 10)})} 
+                  onChange={e => {
+                    const val = e.target.value.replace(/\D/g, '').slice(0, 10);
+                    setRegisterData({...registerData, phone_number: val});
+                  }} 
                 />
               </div>
             </div>
