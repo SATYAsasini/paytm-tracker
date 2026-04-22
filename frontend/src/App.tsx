@@ -4,7 +4,9 @@ import { format } from 'date-fns';
 import { v4 as uuidv4 } from 'uuid';
 import { Plus, ArrowUpDown, IndianRupee, Loader2, AlertCircle, LogOut, Phone, Lock, User, UserPlus, ArrowLeft } from 'lucide-react';
 
-const API_BASE_URL = 'http://localhost:8000/api';
+const API_BASE_URL = window.location.hostname === 'localhost' 
+  ? 'http://localhost:8000/api' 
+  : '/api';
 
 // Global API instance to avoid duplicate interceptors
 const api = axios.create({ baseURL: API_BASE_URL });
