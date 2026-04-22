@@ -189,14 +189,18 @@ const handleRegister = async (e: React.FormEvent) => {
                 <Phone className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-300" size={20} />
                 <input 
                   required 
-                  type="tel" 
-                  pattern="[0-9]{10}" 
+                  type="text" 
                   maxLength={10}
                   inputMode="numeric"
-                  placeholder="Enter 10-digit number" 
+                  placeholder="10-digit mobile number" 
                   className="w-full pl-14 pr-6 py-5 bg-gray-50 rounded-2xl focus:bg-white focus:ring-4 focus:ring-paytm-blue/10 border-2 border-transparent focus:border-paytm-blue transition-all outline-none font-bold" 
                   value={loginData.phone_number} 
-                  onChange={e => setLoginData({...loginData, phone_number: e.target.value.replace(/\D/g, '')})} 
+                  onKeyDown={(e) => {
+                    if (!/[0-9]/.test(e.key) && e.key !== 'Backspace' && e.key !== 'Tab' && e.key !== 'Enter' && e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') {
+                      e.preventDefault();
+                    }
+                  }}
+                  onChange={e => setLoginData({...loginData, phone_number: e.target.value.replace(/\D/g, '').slice(0, 10)})} 
                 />
               </div>
             </div>
@@ -245,14 +249,18 @@ const handleRegister = async (e: React.FormEvent) => {
                 <Phone className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-300" size={20} />
                 <input 
                   required 
-                  type="tel" 
-                  pattern="[0-9]{10}"
+                  type="text" 
                   maxLength={10}
                   inputMode="numeric"
-                  placeholder="Enter 10-digit number" 
+                  placeholder="10-digit mobile number" 
                   className="w-full pl-14 pr-6 py-4 bg-gray-50 rounded-2xl focus:bg-white focus:ring-4 focus:ring-paytm-blue/10 border-2 border-transparent focus:border-paytm-blue transition-all outline-none font-bold" 
                   value={registerData.phone_number} 
-                  onChange={e => setRegisterData({...registerData, phone_number: e.target.value.replace(/\D/g, '')})} 
+                  onKeyDown={(e) => {
+                    if (!/[0-9]/.test(e.key) && e.key !== 'Backspace' && e.key !== 'Tab' && e.key !== 'Enter' && e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') {
+                      e.preventDefault();
+                    }
+                  }}
+                  onChange={e => setRegisterData({...registerData, phone_number: e.target.value.replace(/\D/g, '').slice(0, 10)})} 
                 />
               </div>
             </div>
