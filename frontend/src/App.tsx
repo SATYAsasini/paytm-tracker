@@ -178,7 +178,17 @@ export default function App() {
               <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Phone Number</label>
               <div className="relative">
                 <Phone className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-300" size={20} />
-                <input required type="tel" placeholder="Enter mobile number" className="w-full pl-14 pr-6 py-5 bg-gray-50 rounded-2xl focus:bg-white focus:ring-4 focus:ring-paytm-blue/10 border-2 border-transparent focus:border-paytm-blue transition-all outline-none font-bold" value={loginData.phone_number} onChange={e => setLoginData({...loginData, phone_number: e.target.value})} />
+                <input 
+                  required 
+                  type="tel" 
+                  pattern="[0-9]{10}" 
+                  maxLength={10}
+                  inputMode="numeric"
+                  placeholder="Enter 10-digit number" 
+                  className="w-full pl-14 pr-6 py-5 bg-gray-50 rounded-2xl focus:bg-white focus:ring-4 focus:ring-paytm-blue/10 border-2 border-transparent focus:border-paytm-blue transition-all outline-none font-bold" 
+                  value={loginData.phone_number} 
+                  onChange={e => setLoginData({...loginData, phone_number: e.target.value.replace(/\D/g, '')})} 
+                />
               </div>
             </div>
             <div className="space-y-2">
@@ -224,7 +234,17 @@ export default function App() {
               <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Phone Number</label>
               <div className="relative">
                 <Phone className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-300" size={20} />
-                <input required type="tel" placeholder="Enter mobile number" className="w-full pl-14 pr-6 py-4 bg-gray-50 rounded-2xl focus:bg-white focus:ring-4 focus:ring-paytm-blue/10 border-2 border-transparent focus:border-paytm-blue transition-all outline-none font-bold" value={registerData.phone_number} onChange={e => setRegisterData({...registerData, phone_number: e.target.value})} />
+                <input 
+                  required 
+                  type="tel" 
+                  pattern="[0-9]{10}"
+                  maxLength={10}
+                  inputMode="numeric"
+                  placeholder="Enter 10-digit number" 
+                  className="w-full pl-14 pr-6 py-4 bg-gray-50 rounded-2xl focus:bg-white focus:ring-4 focus:ring-paytm-blue/10 border-2 border-transparent focus:border-paytm-blue transition-all outline-none font-bold" 
+                  value={registerData.phone_number} 
+                  onChange={e => setRegisterData({...registerData, phone_number: e.target.value.replace(/\D/g, '')})} 
+                />
               </div>
             </div>
             <div className="grid grid-cols-2 gap-4">

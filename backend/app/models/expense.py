@@ -2,11 +2,20 @@ from datetime import datetime
 from decimal import Decimal
 from typing import Optional, List
 from sqlmodel import Field, SQLModel, create_engine, Session, select, Relationship
-import uuid
+from pydantic import field_validator
+import re
 
 class UserBase(SQLModel):
+    # Regex: Must be exactly 10 digits (Standard Indian Mobile format)
     phone_number: str = Field(index=True, unique=True)
     name: str
+
+    @field_validator("phone_number")
+    @classmethod
+    def validate_phone(cls, v: str):
+        if not re.match(r"^\d{10}$", v):
+            raise ValueError("Phone number must be exactly 10 digits")
+        return v
 
 class User(UserBase, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
